@@ -24,7 +24,7 @@ import AFQ.tractography as aft
 import AFQ.registration as reg
 import AFQ.dti as dti
 import AFQ.segmentation as seg
-
+import os
 plt.switch_backend('agg')
 
 def main():
@@ -35,7 +35,6 @@ def main():
 	data_bval = str(config['data_bval'])
 	data_bvec = str(config['data_bvec'])
 
-
 	img = nib.load(data_file)
 
 	print("Calculating DTI...")
@@ -45,7 +44,8 @@ def main():
 	    dti_params = {'FA': './dti_FA.nii.gz',
 			  'params': './dti_params.nii.gz'}
 
-	tg = nib.streamlines.load('csa_prob.trk').tractogram
+	#tg = nib.streamlines.load('track.trk').tractogram
+	tg = nib.streamlines.load(config['tck_data']).tractogram
 	streamlines = tg.apply_affine(np.linalg.inv(img.affine)).streamlines
 
 	# Use only a small portion of the streamlines, for expedience:
@@ -81,15 +81,16 @@ def main():
 			           as_generator=False,
 			           affine=img.affine)
 	
-	path = os.getcwd() + '/tract/'
+	path = os.getcwd() + '/tract1/'
         if not os.path.exists(path):
         	os.makedirs(path)
 	
 	for fg in fiber_groups:
 	    	streamlines = fiber_groups[fg]
-		fname = fg + ".trk"
-		aus.write_trk(fname, streamlines)
-
+		fname = fg + ".tck"
+		#aus.write_trk(fname, streamlines)
+		trg = nib.streamlines.Tractogram(streamlines, affine_to_rasmm=img.affine)
+    		nib.streamlines.save(trg,path+fname)
 	"""
 	FA_img = nib.load(dti_params['FA'])
 	FA_data = FA_img.get_data()
