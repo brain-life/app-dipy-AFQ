@@ -1,6 +1,6 @@
 #!/bin/bash
-#PBS -l nodes=3:ppn=16:dc2,walltime=1:00:00
-#PBS -N app-dipy-tracking
+#PBS -l nodes=3:ppn=16:dc2,walltime=0:40:00
+#PBS -N app-dipy-AFQ
 #PBS -V
 
 
@@ -12,29 +12,32 @@ if [ -z $SERVICE_DIR ]; then export SERVICE_DIR=`pwd`; fi
 
 if [ $ENV == "IUHPC" ]; then
 	if [ $HPC == "KARST" ]; then
+		#not yet yested for brlife@karst (probably don't need anaconda2, dipy, nibabel)
 		module unload python
 		module load anaconda2
+		
+		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/dipy
+		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/nibabel
+		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/pyAFQ
 	fi
 	if [ $HPC == "CARBONATE" ]; then
-		module unload python
-		module load anaconda/python2.7
+		#deps > pip install dipy nibabel boto3 cloudpickle dask toolz 
+		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/pyAFQ
+		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/nibabel
+		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/dipy
 	fi
-	
-	export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/dipy
-	export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/nibabel
-	export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/pyAFQ
 fi
 
 if [ $ENV == "VM" ]; then
-	export PYTHONPATH=$PYTHONPATH:/usr/local/dipy
-	export PYTHONPATH=$PYTHONPATH:/usr/local/nibabel
+	#not tested yet
+	#deps > pip install dipy nibabel boto3 cloudpickle dask toolz 
 	export PYTHONPATH=$PYTHONPATH:/usr/local/pyAFQ
 fi
 
 echo "running main"
 
 #matlab -nodisplay -nosplash -r main
-time python $SERVICE_DIR/main.py
+time python -u $SERVICE_DIR/main.py
 
 ret=$?
 if [ $ret -ne 0 ]; then
@@ -43,7 +46,8 @@ if [ $ret -ne 0 ]; then
     exit $ret
 fi
 
-if [ -s mapping.nii.gz ];
+count=$(ls tract1/*.tck | wc -l)
+if [ $count -eq 4 ];
 then 
 	echo 0 > finished
 else 
