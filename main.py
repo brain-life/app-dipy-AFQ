@@ -19,6 +19,7 @@ def main():
 	with open('config1.json') as config_json:
 	    config = json.load(config_json)
 
+	#Paths to data
 	data_file = str(config['data_file'])
 	data_bval = str(config['data_bval'])
 	data_bvec = str(config['data_bvec'])
