@@ -8,8 +8,6 @@ profiles for FA (calculated with DTI).
 
 """
 import os.path as op
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import nibabel as nib
 import dipy.data as dpd
@@ -25,7 +23,6 @@ import AFQ.registration as reg
 import AFQ.dti as dti
 import AFQ.segmentation as seg
 import os
-plt.switch_backend('agg')
 
 def main():
 	with open('config.json') as config_json:
@@ -78,7 +75,8 @@ def main():
 			           bundles,
 			           reg_template=MNI_T2_img,
 			           mapping=mapping,
-			           as_generator=False
+			           as_generator=False,
+				   affine = img.affine
 			           )
 	
 	path = os.getcwd() + '/tract1/'
@@ -89,7 +87,7 @@ def main():
 	    	streamlines = fiber_groups[fg]
 		fname = fg + ".tck"
 		#aus.write_trk(fname, streamlines)
-		trg = nib.streamlines.Tractogram(streamlines)
+		trg = nib.streamlines.Tractogram(streamlines, affine_to_rasmm=img.affine)
     		nib.streamlines.save(trg,path+fname)
 	"""
 	FA_img = nib.load(dti_params['FA'])
