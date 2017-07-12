@@ -1,12 +1,3 @@
-"""
-==========================
-Plotting tract profiles
-==========================
-
-An example of tracking and segmenting two tracts, and plotting their tract
-profiles for FA (calculated with DTI).
-
-"""
 import os.path as op
 import numpy as np
 import nibabel as nib
@@ -25,7 +16,7 @@ import AFQ.segmentation as seg
 import os
 
 def main():
-	with open('config.json') as config_json:
+	with open('config1.json') as config_json:
 	    config = json.load(config_json)
 
 	data_file = str(config['data_file'])
@@ -76,8 +67,7 @@ def main():
 			           reg_template=MNI_T2_img,
 			           mapping=mapping,
 			           as_generator=False,
-				   affine = img.affine
-			           )
+				   affine = img.affine)
 	
 	path = os.getcwd() + '/tract1/'
         if not os.path.exists(path):
@@ -86,19 +76,8 @@ def main():
 	for fg in fiber_groups:
 	    	streamlines = fiber_groups[fg]
 		fname = fg + ".tck"
-		#aus.write_trk(fname, streamlines)
 		trg = nib.streamlines.Tractogram(streamlines, affine_to_rasmm=img.affine)
     		nib.streamlines.save(trg,path+fname)
-	"""
-	FA_img = nib.load(dti_params['FA'])
-	FA_data = FA_img.get_data()
 
-	print("Extracting tract profiles...")
-	for bundle in bundles:
-	    fig, ax = plt.subplots(1)
-	    profile = seg.calculate_tract_profile(FA_data, fiber_groups[bundle])
-	    ax.plot(profile)
-	    ax.set_title(bundle)
-	plt.savefig('bundle.png')
-	"""
+
 main()
