@@ -78,8 +78,8 @@ def main():
 			           bundles,
 			           reg_template=MNI_T2_img,
 			           mapping=mapping,
-			           as_generator=False,
-			           affine=img.affine)
+			           as_generator=False
+			           )
 	
 	path = os.getcwd() + '/tract1/'
         if not os.path.exists(path):
@@ -89,7 +89,7 @@ def main():
 	    	streamlines = fiber_groups[fg]
 		fname = fg + ".tck"
 		#aus.write_trk(fname, streamlines)
-		trg = nib.streamlines.Tractogram(streamlines, affine_to_rasmm=img.affine)
+		trg = nib.streamlines.Tractogram(streamlines)
     		nib.streamlines.save(trg,path+fname)
 	"""
 	FA_img = nib.load(dti_params['FA'])
