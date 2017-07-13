@@ -16,7 +16,7 @@ import AFQ.segmentation as seg
 import os
 
 def main():
-	with open('config1.json') as config_json:
+	with open('config.json') as config_json:
 	    config = json.load(config_json)
 
 	#Paths to data
