@@ -25,20 +25,22 @@ def main():
 	data_bvec = str(config['data_bvec'])
 
 	img = nib.load(data_file)
-
+	
+	"""
 	print("Calculating DTI...")
 	if not op.exists('./dti_FA.nii.gz'):
 	    dti_params = dti.fit_dti(data_file, data_bval, data_bvec, out_dir='.')
 	else:
 	    dti_params = {'FA': './dti_FA.nii.gz',
 			  'params': './dti_params.nii.gz'}
-
+	"""
 	#tg = nib.streamlines.load('track.trk').tractogram
+	
 	tg = nib.streamlines.load(config['tck_data']).tractogram
 	streamlines = tg.apply_affine(np.linalg.inv(img.affine)).streamlines
 
 	# Use only a small portion of the streamlines, for expedience:
-	streamlines = streamlines[::100]
+	#streamlines = streamlines[::100]
 
 	templates = afd.read_templates()
 	bundle_names = ["CST", "ILF"]
@@ -52,12 +54,20 @@ def main():
 
 
 	print("Registering to template...")
+	if not op.exists('mapping.nii.gz'):
+        	gtab = dpg.gradient_table(hardi_fbval, hardi_fbvec)
+    	    	mapping = reg.syn_register_dwi(hardi_fdata, gtab)
+            	reg.write_mapping(mapping, './mapping.nii.gz')
+	else:
+    	    	mapping = reg.read_mapping('./mapping.nii.gz', img, MNI_T2_img)
+	
+	"""
 	MNI_T2_img = dpd.read_mni_template()
 	bvals, bvecs = read_bvals_bvecs(data_bval, data_bvec)
 	gtab = gradient_table(bvals, bvecs, b0_threshold=100)
 	mapping = reg.syn_register_dwi(data_file, gtab)
 	reg.write_mapping(mapping, './mapping.nii.gz')
-
+	"""
 
 	print("Segmenting fiber groups...")
 	fiber_groups = seg.segment(data_file,
