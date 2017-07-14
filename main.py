@@ -58,7 +58,8 @@ def main():
 	MNI_T2_img = dpd.read_mni_template()
 	print("Registering to template...")
 	if not op.exists('mapping.nii.gz'):
-        	gtab = gradient_table(data_bval, data_bvec)
+		bvals, bvecs = read_bvals_bvecs(data_bval, data_bvec)
+        	gtab = gradient_table(bvals, bvecs)
     	    	mapping = reg.syn_register_dwi(data_file, gtab)
             	reg.write_mapping(mapping, './mapping.nii.gz')
 	else:
