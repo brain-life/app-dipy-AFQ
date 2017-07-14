@@ -16,15 +16,15 @@ if [ $ENV == "IUHPC" ]; then
 		module unload python
 		module load anaconda2
 		
-		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/dipy
-		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/nibabel
-		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/pyAFQ
+		export PYTHONPATH=/N/u/aryaam/Karst/dipy:$PYTHONPATH
+		export PYTHONPATH=/N/u/aryaam/Karst/github_repos/nibabel:$PYTHONPATH
+		export PYTHONPATH=/N/u/aryaam/Karst/github_repos/pyAFQ:$PYTHONPATH
 	fi
 	if [ $HPC == "CARBONATE" ]; then
 		#deps > pip install dipy nibabel boto3 cloudpickle dask toolz 
-		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/pyAFQ
-		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/nibabel
-		export PYTHONPATH=$PYTHONPATH:/N/u/brlife/Karst/git/dipy
+		export PYTHONPATH=/N/u/aryaam/Karst/github_repos/pyAFQ:$PYTHONPATH
+		export PYTHONPATH=/N/u/aryaam/Karst/github_repos/nibabel:$PYTHONPATH
+		export PYTHONPATH=/N/u/brlife/Karst/git/dipy:$PYTHONPATH
 	fi
 fi
 
