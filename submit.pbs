@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -l nodes=3:ppn=16:dc2,walltime=0:40:00
+#PBS -l nodes=3:ppn=16:dc2,walltime=2:00:00
 #PBS -N app-dipy-AFQ
 #PBS -V
 
@@ -24,7 +24,7 @@ if [ $ENV == "IUHPC" ]; then
 		#deps > pip install dipy nibabel boto3 cloudpickle dask toolz 
 		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/pyAFQ
 		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/github_repos/nibabel
-		export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/dipy
+		#export PYTHONPATH=$PYTHONPATH:/N/u/aryaam/Karst/dipy
 	fi
 fi
 
