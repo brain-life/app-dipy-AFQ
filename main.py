@@ -57,8 +57,11 @@ def main():
 	print('Set Bundles')
 	MNI_T2_img = dpd.read_mni_template()
 	print("Registering to template...")
+	print('bval' + data_bval)
+	print('bvec' + data_bvec)
+	bvals, bvecs = read_bvals_bvecs(data_bval, data_bvec)
 	if not op.exists('mapping.nii.gz'):
-		bvals, bvecs = read_bvals_bvecs(data_bval, data_bvec)
+		#bvals, bvecs = read_bvals_bvecs(data_bval, data_bvec)
         	gtab = gradient_table(bvals, bvecs)
     	    	mapping = reg.syn_register_dwi(data_file, gtab)
             	reg.write_mapping(mapping, './mapping.nii.gz')
@@ -73,6 +76,12 @@ def main():
 	reg.write_mapping(mapping, './mapping.nii.gz')
 	"""
 
+	print("Bvecs shape: " + str(bvecs.shape))
+	print("Bvals shape: " + str(bvals.shape))
+	print(type(bvecs))
+	print(type(bvals))
+	print("Bvecs 0: " + str(bvecs.shape[0]))
+	print("Bvecs 1: " + str(bvecs.shape[1]))
 	print("Segmenting fiber groups...")
 	fiber_groups = seg.segment(data_file,
 			           data_bval,
