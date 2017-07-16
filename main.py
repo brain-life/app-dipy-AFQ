@@ -43,7 +43,7 @@ def main():
        
         print('Loaded streamlines')
 	# Use only a small portion of the streamlines, for expedience:
-	streamlines = streamlines[::10]
+	# streamlines = streamlines[::1000]
 
 	templates = afd.read_templates()
 	bundle_names = ["CST", "ILF"]
