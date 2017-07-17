@@ -25,14 +25,15 @@ def main():
 	#tg = nib.streamlines.load('track.trk').tractogram
         streamlines = list(aft.track(dti_params['params']))
 	aus.write_trk('./108323_dti.trk', streamlines, affine=img.affine)
-        """
-	tg = nib.streamlines.load(config['tck_data']).tractogram
-	#cannot remove inv
-	#cannot remove affine
+	
+	"""
+	tg = nib.streamlines.load(config['tck_data']).tractogram	
+        #cannot remove inv, affine
 	streamlines = tg.apply_affine(np.linalg.inv(img.affine)).streamlines
         #streamlines = tg.streamlines       
         print('Loaded streamlines')
-        
+        """
+
 	# Use only a small portion of the streamlines, for expedience:
 	streamlines = streamlines[::100]
 
@@ -48,8 +49,6 @@ def main():
 	print('Set Bundles')
 	MNI_T2_img = dpd.read_mni_template()
 	print("Registering to template...")
-	print('bval' + data_bval)
-	print('bvec' + data_bvec)
 	bvals, bvecs = read_bvals_bvecs(data_bval, data_bvec)
 	if not op.exists('mapping.nii.gz'):
 		#bvals, bvecs = read_bvals_bvecs(data_bval, data_bvec)
@@ -59,6 +58,8 @@ def main():
 	else:
     	    	mapping = reg.read_mapping('./mapping.nii.gz', img, MNI_T2_img)
 	
+
+	print("Segmenting fiber groups...")
 	fiber_groups = seg.segment(data_file,
 			           data_bval,
 			           data_bvec,
@@ -79,6 +80,5 @@ def main():
 		fname = fg + ".tck"
 		trg = nib.streamlines.Tractogram(streamlines, affine_to_rasmm=img.affine)
     		nib.streamlines.save(trg,path+fname)
-	"""
 
 main()
