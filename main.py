@@ -1,9 +1,19 @@
-import nibabel as nib
-import json
 import os.path as op
+import numpy as np
+import nibabel as nib
+import dipy.data as dpd
+import json
+from dipy.data import fetcher
+from dipy.io.gradients import read_bvals_bvecs
+from dipy.core.gradients import gradient_table
+
 import AFQ.utils.streamlines as aus
+import AFQ.data as afd
 import AFQ.tractography as aft
+import AFQ.registration as reg
 import AFQ.dti as dti
+import AFQ.segmentation as seg
+import os
 
 def main():
 	with open('config1.json') as config_json:
