@@ -16,13 +16,22 @@ import AFQ.segmentation as seg
 import os
 
 def main():
-	with open('config1.json') as config_json:
+	with open('config.json') as config_json:
 	    config = json.load(config_json)
 	
+	
+	dpd.fetch_stanford_hardi()
+
+	hardi_dir = op.join(fetcher.dipy_home, "stanford_hardi")
+	data_file = op.join(hardi_dir, "HARDI150.nii.gz")
+	data_bval = op.join(hardi_dir, "HARDI150.bval")
+	data_bvec = op.join(hardi_dir, "HARDI150.bvec")
 	#Paths to data
+	"""
 	data_file = str(config['data_file'])
 	data_bval = str(config['data_bval'])
 	data_bvec = str(config['data_bvec'])
+	"""
 	img = nib.load(data_file)
 
 	print('Loaded Data')	
@@ -34,7 +43,7 @@ def main():
     		dti_params = {'FA': './dti_FA.nii.gz','params': './dti_params.nii.gz'}
 	#tg = nib.streamlines.load('track.trk').tractogram
         streamlines = list(aft.track(dti_params['params']))
-	aus.write_trk('./108323_dti.trk', streamlines, affine=img.affine)
+	aus.write_trk('./HARDI_dti.trk', streamlines, affine=img.affine)
 	
 	"""
 	tg = nib.streamlines.load(config['tck_data']).tractogram	
