@@ -20,3 +20,5 @@ ENV PYTHONPATH /nibabel:$PYTHONPATH
 ENV PYTHONPATH /pyAFQ:$PYTHONPATH
 
 CMD python /app/main.py
+ENTRYPOINT ["/usr/bin/python", "/app/main.py"]
+

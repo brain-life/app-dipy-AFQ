@@ -1,1 +1,1 @@
-docker build . -t app-dipy-afq
+docker build . -t aarya22/app-dipy-afq
