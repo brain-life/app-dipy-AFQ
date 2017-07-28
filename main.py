@@ -36,7 +36,7 @@ def main():
     		dti_params = {'FA': './dti_FA.nii.gz','params': './dti_params.nii.gz'}
 	
 	
-	tg = nib.streamlines.load(config['tck_data']).tractogram	
+	tg = nib.streamlines.load(str(config['tck_data'])).tractogram	
         #cannot remove inv, affine
 	streamlines = tg.apply_affine(np.linalg.inv(img.affine)).streamlines
         #streamlines = tg.streamlines       
@@ -89,5 +89,6 @@ def main():
 		fname = fg + ".tck"
 		trg = nib.streamlines.Tractogram(streamlines, affine_to_rasmm=img.affine)
     		nib.streamlines.save(trg,path+fname)
+   		print('Finished segment')
 
 main()
