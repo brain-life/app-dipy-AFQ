@@ -11,8 +11,8 @@ if [ $ENV == "SINGULARITY" ]; then
 cat <<EOT > _run.sh
 time singularity run /usr/local/images/brainlife_dipy-afq.img
 #check for output files
-count=$(ls tract1/*.tck | wc -l)
-if [ $count -eq 4 ];
+count=\$(ls tract1/*.tck | wc -l)
+if [ \$count -eq 4 ];
 then
     echo 0 > finished
 else
